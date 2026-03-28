@@ -1,190 +1,151 @@
-# 🌐 ESP32 Web-Based Relay Control System
-
-Control your home appliances from a web browser using an ESP32 and relay modules. This project creates a simple web interface to switch devices ON/OFF over Wi-Fi.
 
 ---
 
-## 🚀 Project Overview
+# ESP32 Web-Based Relay Control System
 
-This project uses an ESP32 microcontroller to host a web server that allows you to control relays remotely. Each relay can control an electrical appliance like lights, fans, or other devices.
-
-The interface is accessible from any device connected to the same Wi-Fi network.
+Control home appliances from any browser on your local network using an ESP32 microcontroller. No cloud, no external server — just Wi-Fi.
 
 ---
 
-## ✨ Features
+## Overview
 
-* 📡 Wi-Fi-based control (no external server needed)
-* 🌍 Web interface (mobile & desktop friendly)
-* ⚡ Real-time relay switching
-* 🔁 Supports multiple relays
-* 🧠 Asynchronous web server (fast & efficient)
+The ESP32 hosts a lightweight asynchronous web server that serves a toggle-switch interface. Any device on the same Wi-Fi network can visit the ESP32's IP address and flip relays on or off in real time — no app install required.
 
 ---
 
-## 🛠️ Components Required
+## Features
 
-* ESP32 Development Board
-* Relay Module (1/2/4 channel)
-* Jumper Wires
-* Breadboard (optional)
-* Power Supply
-
----
-
-## 🔌 Circuit Connections
-
-| ESP32 GPIO | Relay Module |
-| ---------- | ------------ |
-| GPIO 2     | IN1          |
-| GPIO 4     | IN2          |
-| GND        | GND          |
-| 5V / VIN   | VCC          |
-
-> ⚠️ **Important:**
->
-> * Ensure your relay module voltage matches ESP32 (usually 5V relay with proper driver)
-> * Be careful when working with high voltage appliances
+- Wi-Fi control with no external server dependency
+- Mobile and desktop friendly web interface
+- Real-time relay switching via async HTTP
+- Configurable for 1, 2, or 4-channel relay modules
+- Efficient asynchronous web server (ESPAsyncWebServer)
 
 ---
 
-## 📲 How It Works
+## Hardware Required
 
-1. ESP32 connects to your Wi-Fi network
-2. It starts a web server on port 80
-3. You open the ESP32 IP address in a browser
-4. A web page with toggle switches appears
-5. Toggling a switch sends a request to ESP32
-6. ESP32 turns the relay ON/OFF
+| Component | Notes |
+|-----------|-------|
+| ESP32 Development Board | Any standard dev board |
+| Relay Module | 1, 2, or 4-channel |
+| Jumper Wires | — |
+| Power Supply | 5V recommended |
 
 ---
 
-## 💻 Installation & Setup
+## Wiring
+
+| ESP32 GPIO | Relay Module Pin |
+|------------|------------------|
+| GPIO 2 | IN1 |
+| GPIO 4 | IN2 |
+| GND | GND |
+| 5V / VIN | VCC |
+
+> **Safety:** Use relay modules with optocouplers for electrical isolation. Always test with low-voltage loads before connecting AC appliances. Never touch live wiring.
+
+---
+
+## Getting Started
 
 ### 1. Install Libraries
 
-In Arduino IDE, install:
+In Arduino IDE, install the following via Library Manager or manually:
 
-* `ESPAsyncWebServer`
-* `AsyncTCP`
+- [`ESPAsyncWebServer`](https://github.com/me-no-dev/ESPAsyncWebServer)
+- [`AsyncTCP`](https://github.com/me-no-dev/AsyncTCP)
 
----
+### 2. Configure Wi-Fi Credentials
 
-### 2. Configure Wi-Fi
-
-Update your credentials in the code:
+Open the sketch and update:
 
 ```cpp
-const char* ssid = "YOUR_WIFI_NAME";
+const char* ssid     = "YOUR_WIFI_NAME";
 const char* password = "YOUR_WIFI_PASSWORD";
 ```
 
----
+### 3. Upload the Sketch
 
-### 3. Upload Code
+- Board: **ESP32 Dev Module**
+- Baud rate: **115200**
 
-* Select board: **ESP32 Dev Module**
-* Upload the code
-* Open Serial Monitor (115200 baud)
-
----
-
-### 4. Access Web Interface
-
-* After connecting, ESP32 prints an IP like:
+Open the Serial Monitor after uploading. The ESP32 will print its assigned IP address once connected:
 
 ```
-192.168.1.100
+Connected. IP address: 192.168.1.100
 ```
 
-* Open it in your browser:
+### 4. Open the Web Interface
+
+Visit the IP in any browser:
 
 ```
 http://192.168.1.100
 ```
 
----
-
-## 📸 Web Interface Preview
-
-* Clean UI with toggle switches
-* Each switch controls one relay
-* Works on mobile devices
+You'll see a page with toggle switches — one per relay.
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
-### Change Number of Relays
+### Number of Relays
 
 ```cpp
 #define NUM_RELAYS 2
 int relayGPIOs[NUM_RELAYS] = {2, 4};
 ```
 
----
-
 ### Relay Type
 
 ```cpp
-#define RELAY_NO true
+#define RELAY_NO true   // true = Normally Open, false = Normally Closed
 ```
 
-* `true` → Normally Open (NO)
-* `false` → Normally Closed (NC)
+Set to `false` if your relay module is active-low (Normally Closed).
 
 ---
 
-## 🧪 Example Use Cases
+## Use Cases
 
-* 💡 Home automation (lights, fans)
-* 🌱 Smart irrigation systems
-* 🔌 Remote power control
-* 🏠 DIY smart home projects
-
----
-
-## ⚠️ Safety Notes
-
-* Do NOT touch live AC wires
-* Use proper insulation
-* Prefer relay modules with optocouplers
-* Test with low voltage first
+- Smart home lighting and fan control
+- Automated irrigation systems
+- Remote power switching for equipment
+- DIY home automation prototypes
 
 ---
 
-## 🔮 Future Improvements
+## Possible Improvements
 
-* 📱 Mobile app integration (Blynk / MQTT)
-* 🌐 Internet control (via cloud)
-* 🗣️ Voice assistant integration (Alexa / Google)
-* ⏱️ Scheduling & timers
-
----
-
-## 🤝 Contributing
-
-Feel free to fork this repo and submit pull requests!
+- MQTT integration for IoT platform support (Home Assistant, Node-RED)
+- Internet access via cloud relay (Cloudflare Tunnel, ngrok)
+- Voice control via Alexa or Google Home
+- Scheduled on/off timers with NTP sync
 
 ---
 
-## 📜 License
+## Safety Notes
 
-This project is open-source and available under the MIT License.
-
----
-
-## 🙌 Acknowledgements
-
-* ESP32 community
-* Arduino ecosystem
+- Do not touch live AC wiring while the circuit is powered
+- Use relay modules that include optocoupler isolation
+- Verify your relay module's coil voltage matches your power supply (typically 5V)
+- Always prototype with low-voltage loads first
 
 ---
 
-## 👨‍💻 Author
+## License
 
-**Your Name Here**
+MIT License — free to use, modify, and distribute.
 
 ---
 
-⭐ If you like this project, don’t forget to star the repo!
+## Contributing
+
+Pull requests are welcome. For major changes, open an issue first to discuss what you'd like to change.
+
+---
+
+*Built with the ESP32 community and Arduino ecosystem.*
+
+---
